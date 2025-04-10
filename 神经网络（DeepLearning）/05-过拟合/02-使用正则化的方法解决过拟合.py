@@ -32,7 +32,7 @@ ax2.plot(x.detach().numpy(), y.detach().numpy(), 'ro-')
 criterion = nn.MSELoss()
 optimizer1 = torch.optim.SGD(net01.parameters(), 0.1)
 # weight_decay=0.1 加入L2的惩罚系数（正则化）
-optimizer2 = torch.optim.SGD(net02.parameters(), 0.1, weight_decay=0.01)
+optimizer2 = torch.optim.SGD(net02.parameters(), 0.1, weight_decay=0.1)
 
 epochs = 10000
 for epoch in range(epochs):
