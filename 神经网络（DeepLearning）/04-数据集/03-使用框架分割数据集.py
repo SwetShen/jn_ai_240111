@@ -38,3 +38,8 @@ train_dataset, valid_dataset = random_split(dataset, [0.8, 0.2])
 # 引入数据加载器 batch_size=100 每一100条数据为一个批次  shuffle=True 将数据顺序打乱
 train_loader = DataLoader(train_dataset, batch_size=10, shuffle=True)
 valid_loader = DataLoader(valid_dataset, batch_size=10)
+
+for features,labels in train_loader:
+    print(features.shape)
+    print(labels)
+    print("======================")
