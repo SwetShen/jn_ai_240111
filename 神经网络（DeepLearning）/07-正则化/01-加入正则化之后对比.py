@@ -6,9 +6,15 @@ fig = plt.figure(figsize=(10, 4))
 ax1 = fig.add_subplot(121)
 ax2 = fig.add_subplot(122)
 
-# 简单模型
+# 复杂模型
 net01 = nn.Sequential(
-    nn.Linear(1, 1)
+    nn.Linear(1, 10),
+    nn.ReLU(),
+    nn.Linear(10, 10),
+    nn.ReLU(),
+    nn.Linear(10, 10),
+    nn.ReLU(),
+    nn.Linear(10, 1)
 )
 
 # 复杂模型
@@ -31,8 +37,7 @@ ax2.plot(x.detach().numpy(), y.detach().numpy(), 'ro-')
 
 criterion = nn.MSELoss()
 optimizer1 = torch.optim.SGD(net01.parameters(), 0.1)
-# weight_decay=0.1 加入L2的惩罚系数（正则化）
-optimizer2 = torch.optim.SGD(net02.parameters(), 0.1, weight_decay=0.01)
+optimizer2 = torch.optim.SGD(net02.parameters(), 0.1, weight_decay=0.01) # L2正则化
 
 epochs = 10000
 for epoch in range(epochs):
