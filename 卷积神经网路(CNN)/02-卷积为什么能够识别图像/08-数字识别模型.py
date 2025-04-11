@@ -38,6 +38,7 @@ model = nn.Sequential(
     nn.Dropout(),
     nn.Linear(128 * 8 * 8, 1024),
     nn.ReLU(),
+    nn.Dropout(),
     nn.Linear(1024, 10),  # 10是数字的分类数量
     nn.LogSoftmax(dim=-1)
 )
