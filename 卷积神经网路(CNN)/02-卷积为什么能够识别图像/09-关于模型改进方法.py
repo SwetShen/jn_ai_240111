@@ -7,7 +7,7 @@ from train_utils import train
 
 # ======================  加载图像数据集 =========================
 transform = transforms.Compose([
-    transforms.ToTensor()  # 将图像的numpy类型转化为torch.tensor
+    transforms.ToTensor()  # 将图像的numpy/PIL类型转化为torch.tensor
 ])
 dataset = ImageFolder("./data/numbers", transform=transform)  # 分类的目录在什么位置就取到哪里
 # print(dataset.classes) # 分类下标集合

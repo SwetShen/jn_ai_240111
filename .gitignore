@@ -175,3 +175,7 @@ cython_debug/
 */data/
 */*/data/
 **/data/
+
+*/save/
+*/*/save/
+**/save/
