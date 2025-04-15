@@ -17,6 +17,7 @@ transform = transforms.Compose([
     # transforms.Resize(227),  # 将最短边设置为227
     # transforms.CenterCrop(227), # 在图像的中央位置截取227的大小
     # transforms.RandomVerticalFlip(),  # 随机的垂直翻转
+    # transforms.RandomRotation((-5,5)), # 随机（-5° ~ 5°）旋转
     transforms.RandomHorizontalFlip() # 随机的水平翻转
 ])
 
