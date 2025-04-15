@@ -79,3 +79,20 @@ torch的官方网页：[PyTorch](https://pytorch.org/)
 （复制下面的链接，到迅雷中）
 
 ![image-20250415093915150](./assets/image-20250415093915150.png)
+
+迅雷下载之后，直接安装：
+
+![image-20250415094506318](./assets/image-20250415094506318.png)
+
+最后看到此处，就安装成功了
+
+<img src="./assets/image-20250415094938118.png" alt="image-20250415094938118" style="zoom:50%;" />
+
+
+
+重新执行torch中的命令：
+
+```
+pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+```
+
