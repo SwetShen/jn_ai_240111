@@ -47,7 +47,7 @@ MobileNetV1 还不够轻量和高性能，为了让移动设备有更好的体�
 
 ### ReLU6
 
-在 MobileNetV2 中使用了 ReLU6 而不是 ReLU，ReLU6，将在输入大于 6 时，将结果设为 0，如图:
+在 MobileNetV2 中使用了 ReLU6 而不是 ReLU，ReLU6，将在输入大于 6 时，将结果设为 6，如图:
 
 ![](md-img/学习笔记_2024-01-03-16-07-08.png)
 
