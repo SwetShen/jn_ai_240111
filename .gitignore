@@ -179,3 +179,5 @@ cython_debug/
 */save/
 */*/save/
 **/save/
+
+.idea
