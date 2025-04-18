@@ -29,6 +29,28 @@ class Inception(nn.Module):
         return torch.concat((b1, b2, b3, b4), dim=1)
 
 
+# 辅助分类器
+class AuxiliaryClassifier(nn.Module):
+    def __init__(self, in_channels, num_classes=1000):
+        super().__init__()
+        self.avg_pool = nn.AvgPool2d(5, stride=3)
+        # 输出 128 是固定的
+        self.c = Conv2dNormActivation(in_channels, 128, 1)
+        self.classifier = nn.Sequential(
+            nn.Flatten(start_dim=1),
+            nn.Linear(128 * 4 * 4, 1024),
+            nn.ReLU(),
+            nn.Linear(1024, num_classes),
+            nn.LogSoftmax(dim=-1)
+        )
+
+    def forward(self, x):
+        x = self.avg_pool(x)
+        x = self.c(x)
+        y = self.classifier(x)
+        return y
+
+
 class GoogLeNet(nn.Module):
     def __init__(self, num_classes=1000):
         super().__init__()
@@ -47,6 +69,10 @@ class GoogLeNet(nn.Module):
         self.inception5a = Inception(832, 256, 160, 320, 32, 128, 128)
         self.inception5b = Inception(832, 384, 192, 384, 48, 128, 128)
 
+        # 两个辅助分类器
+        self.aux1 = AuxiliaryClassifier(512, num_classes)
+        self.aux2 = AuxiliaryClassifier(528, num_classes)
+
         self.max_pool = nn.MaxPool2d(3, stride=2, padding=1)
         self.avg_pool = nn.AvgPool2d(7, stride=1)
 
@@ -59,6 +85,8 @@ class GoogLeNet(nn.Module):
 
     # 写代码，着眼于业务
     def forward(self, x):
+        y1 = None
+        y2 = None
         # Nx3x224x224
         x = self.c1(x)
         # Nx64x112x112
@@ -72,9 +100,14 @@ class GoogLeNet(nn.Module):
         x = self.inception3b(x)
         x = self.max_pool(x)
         x = self.inception4a(x)
+        # 若处于训练中，则调用辅助分类器
+        if self.training:
+            y1 = self.aux1(x)
         x = self.inception4b(x)
         x = self.inception4c(x)
         x = self.inception4d(x)
+        if self.training:
+            y2 = self.aux2(x)
         x = self.inception4e(x)
         x = self.max_pool(x)
         x = self.inception5a(x)
@@ -83,13 +116,21 @@ class GoogLeNet(nn.Module):
         x = self.dropout(x)
         x = self.fc(x)
         y = self.log_softmax(x)
-        return y
+        return y, y1, y2
 
 
 if __name__ == '__main__':
     import torch
 
-    model = GoogLeNet()
+    model = GoogLeNet(num_classes=3)
+    labels = torch.tensor([1, 0, 2, 0, 1])
     x = torch.rand(5, 3, 224, 224)
-    y = model(x)
+    y, y1, y2 = model(x)
     print(y.shape)
+    # 负对数似然损失
+    loss_fn = nn.NLLLoss()
+    l1 = loss_fn(y, labels)
+    l2 = loss_fn(y1, labels)
+    l3 = loss_fn(y2, labels)
+    loss = l1 + 0.3 * l2 + 0.3 * l3
+    print(loss)
