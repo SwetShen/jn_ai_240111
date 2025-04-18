@@ -18,7 +18,7 @@ class BasicBlock(nn.Module):
         # 2. 当 is_downsample 为 True 时，则进行下采样
         self.downsample_conv = Conv2dNormActivation(in_channels, out_channels, 1,
                                                     activation_layer=None,
-                                                    stride=2 if is_downsample else 1) if in_channels != out_channels else None
+                                                    stride=2) if in_channels != out_channels else None
         self.relu = nn.ReLU()
 
     def forward(self, x):
@@ -48,7 +48,7 @@ class Bottleneck(nn.Module):
         self.c2 = Conv2dNormActivation(_d_4_dim, _d_4_dim, 3)
         # 最后一层卷积不激活
         self.c3 = Conv2dNormActivation(_d_4_dim, out_channels, 1, activation_layer=None)
-        self.downsample_conv = Conv2dNormActivation(in_channels, out_channels, 1, stride=2 if is_downsample else 1,
+        self.downsample_conv = Conv2dNormActivation(in_channels, out_channels, 1, stride=2,
                                                     activation_layer=None) if in_channels != out_channels else None
         self.relu = nn.ReLU()
 
