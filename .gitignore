@@ -182,3 +182,5 @@ cython_debug/
 
 .idea
 weights
+test
+*test*
