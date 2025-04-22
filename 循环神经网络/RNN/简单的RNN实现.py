@@ -57,3 +57,7 @@ if __name__ == '__main__':
     y, h = model(x)
     print(y.shape)
     print(h.shape)
+
+    l = nn.Linear(10, 20)
+    print(l.weight.shape)
+    print(l.bias.shape)
