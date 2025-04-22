@@ -17,7 +17,7 @@ model = nn.RNN(
     nonlinearity='relu',
     bias=False,
     batch_first=True,
-    bidirectional=False
+    bidirectional=True
 )
 
 # 输入输出形状解释:
@@ -37,7 +37,15 @@ model = nn.RNN(
 
 
 x = torch.rand(5, 3, 2)
-h = torch.rand(3, 5, 10)
+h = torch.rand(6, 5, 10)
 y, h = model(x, h)
 print(y.shape)
 print(h.shape)
+
+# 官方的 RNNCell
+cell = nn.RNNCell(
+    input_size=2,
+    hidden_size=10,
+    bias=False,
+    nonlinearity='relu'
+)

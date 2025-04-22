@@ -61,3 +61,5 @@ if __name__ == '__main__':
     l = nn.Linear(10, 20)
     print(l.weight.shape)
     print(l.bias.shape)
+
+
