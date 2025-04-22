@@ -5,7 +5,9 @@
 # view vs reshape
 # 1. view reshape 和 连续性无关
 # 2. view 是视图，只会改变你看到的样子，不会改变内存
-# 3. reshape 是创建一个新张量，分配新的内存空间
+# 3. reshape 的策略:
+#   1. 当 reshape 一个不连续张量时，是创建一个新张量，分配新的内存空间
+#   2. 当 reshape 一个连续张量时，是创建一个视图，不会分配新的内存空间
 
 import torch
 
@@ -26,6 +28,10 @@ import torch
 
 t = torch.arange(12)
 t1 = t.view(3, 4)
-print(t1.is_contiguous())
 t2 = t.reshape(3, 4)
-print(t2.is_contiguous())
+print(id(t1) == id(t))
+print(id(t2) == id(t))
+print(t1 is t)
+print(t2 is t)
+print(t1.data_ptr() == t.data_ptr())
+print(t2.data_ptr() == t.data_ptr())
