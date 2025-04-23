@@ -6,12 +6,14 @@ class LangModel(nn.Module):
     # vocab_size: 词汇表大小
     def __init__(self, vocab_size, hidden_size=512):
         super().__init__()
-        self.lstm = nn.LSTM(vocab_size, hidden_size, proj_size=vocab_size)
+        self.lstm = nn.LSTM(vocab_size, hidden_size)
+        self.fc_out = nn.Linear(hidden_size, vocab_size)
 
     # x: one_hot 编码后的张量
     # 输出: 预测文本的概率分布
     def forward(self, x):
         y, _ = self.lstm(x)
+        y = self.fc_out(y)
         return y
 
 
