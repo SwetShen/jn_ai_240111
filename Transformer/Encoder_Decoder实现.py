@@ -23,10 +23,6 @@ class Encoder(nn.Module):
         return memory
 
 
-20000
-512
-
-
 # 解码器
 class Decoder(nn.Module):
     # vocab_size: 词典大小
