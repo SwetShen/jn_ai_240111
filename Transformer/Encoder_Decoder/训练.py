@@ -1,8 +1,8 @@
 import torch
 from torch import nn
 
-from Transformer.Encoder_Decoder实现 import EncoderDecoder
-from Transformer.数据集 import LangDataset, vocab
+from Encoder_Decoder实现 import EncoderDecoder
+from 数据集 import LangDataset, vocab
 
 EPOCH = 1000
 lr = 1e-1

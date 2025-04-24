@@ -2,8 +2,8 @@ import time
 
 import torch
 
-from Transformer.Encoder_Decoder实现 import EncoderDecoder
-from Transformer.数据集 import vocab
+from Encoder_Decoder实现 import EncoderDecoder
+from 数据集 import vocab
 
 eos_idx = vocab.index('<eos>')
 
