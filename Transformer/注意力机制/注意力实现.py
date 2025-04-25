@@ -44,7 +44,7 @@ V = x @ Wv
 def cosine_similarity(Q, K, eps=1e-8):
     return (Q @ K.T) / (torch.sqrt(Q @ Q.T) * torch.sqrt(K @ K.T) + eps)
 
-# cosine_similarity = torch.nn.CosineSimilarity(dim=0)
+# cosine_similarity = torch.nn.CosineSimilarity(dim=1)
 
 
 # 注意力得分
