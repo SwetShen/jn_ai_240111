@@ -57,5 +57,6 @@ scores = cosine_similarity(Q, K)
 weights = scores.softmax(dim=-1)
 
 # 计算加权后的 V
+# (5, 512)
 attention = weights @ V
 print(attention.shape)
