@@ -1,0 +1,48 @@
+# 注意力掩码
+# 什么是注意力掩码？
+# 掩码: 用于计算 QK 点积时，叠加一个值（源码中是在计算QK点积前 torch.nn.functional 5439行）
+# 形象的理解就是在输入序列上蒙住了部分的序列成员，让其不参与运算
+# 有什么用？
+# 用于抑制部分 QK 点积的结果，让其不参与注意力运算，通俗的理解就是，屏蔽部分序列中的成员在注意力计算时的效果
+# 被抑制的成员，其注意力权重接近 0，意为完全不重要
+import math
+
+import torch
+import torch.nn as nn
+from sentence_transformers import SentenceTransformer
+
+embedding = SentenceTransformer(r'D:\projects\ai_models\bge-small-zh')
+embedding_dim = embedding.get_sentence_embedding_dimension()
+
+texts = '我 爱 祖国 ! [PAD] [PAD]'.split()
+
+x = embedding.encode(texts, convert_to_tensor=True)
+W = torch.randn(3 * embedding_dim, embedding_dim)
+Wq, Wk, Wv = W.chunk(3, dim=0)
+
+Q = x @ Wq
+K = x @ Wk
+V = x @ Wv
+
+scores = Q @ K.T / math.sqrt(embedding_dim)
+
+# 定义掩码
+# 0: 不掩盖对应位置的值
+# float('-inf'): 掩盖对应位置的值
+attn_mask = torch.tensor([
+    [0., float('-inf'), 0., 0., 0., 0.],
+    [0., 0., 0., 0., 0., 0.],
+    [0., 0., float('-inf'), 0., 0., 0.],
+    [0., 0., 0., 0., 0., 0.],
+    [float('-inf'), 0., 0., 0., 0., 0.],
+    [0., 0., 0., 0., 0., 0.],
+])
+
+# 叠加掩码
+scores = scores + attn_mask
+
+weights = nn.functional.softmax(scores, dim=-1)
+
+attention = weights @ V
+
+print(attention.shape)
