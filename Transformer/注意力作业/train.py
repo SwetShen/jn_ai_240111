@@ -4,12 +4,17 @@ from torch import nn
 from Transformer.注意力作业.dataset import MyDataset
 from Transformer.注意力作业.model import MyModel
 
-EPOCH = 100
+EPOCH = 1000
 lr = 1e-1
 
 ds = MyDataset()
 
 model = MyModel()
+try:
+    model.load_state_dict(torch.load('weights/model.pt', weights_only=True))
+    print('模型加载成功')
+except:
+    print('模型加载失败')
 
 loss_fn = nn.CrossEntropyLoss()
 optim = torch.optim.SGD(model.parameters(), lr=lr)
@@ -27,4 +32,8 @@ for epoch in range(EPOCH):
         count += 1
         loss.backward()
         optim.step()
-    print(f'EPOCH: [{epoch + 1}/{EPOCH}]; loss: {total_loss / count}')
+
+    if (epoch + 1) % 100 == 0:
+        print(f'EPOCH: [{epoch + 1}/{EPOCH}]; loss: {total_loss / count}')
+
+torch.save(model.state_dict(), 'weights/model.pt')
