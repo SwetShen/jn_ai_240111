@@ -13,8 +13,8 @@ class LangModel(nn.Module):
         self.transformer = nn.Transformer(
             d_model=embed_dim,
             nhead=self.nhead,
-            num_encoder_layers=6,
-            num_decoder_layers=6,
+            num_encoder_layers=10,
+            num_decoder_layers=10,
             dim_feedforward=2048,
             batch_first=True,
             norm_first=True,
@@ -37,6 +37,8 @@ class LangModel(nn.Module):
         # 构造解码器的因果注意力掩码
         tgt_mask = nn.Transformer.generate_square_subsequent_mask(src.shape[1]).unsqueeze(0).expand(
             src.shape[0] * self.nhead, -1, -1)
+        # 将新建的张量放到模型对应的设备上
+        tgt_mask = tgt_mask.to(self.device)
 
         # 调用transformer
         y = self.transformer(
