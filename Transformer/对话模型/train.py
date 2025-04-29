@@ -6,7 +6,7 @@ from Transformer.对话模型.LangModel import LangModel
 from Transformer.对话模型.dataset import LangDataset
 
 EPOCH = 100
-lr = 1e-2
+lr = 1e-3
 
 ds = LangDataset()
 dl = DataLoader(ds, batch_size=1, shuffle=True)

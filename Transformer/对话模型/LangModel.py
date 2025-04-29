@@ -8,13 +8,13 @@ class LangModel(nn.Module):
     def __init__(self):
         super().__init__()
         embed_dim = embedding.get_sentence_embedding_dimension()
-        self.nhead = 4
+        self.nhead = 8
         self.pe = PositionEncoding(embed_dim)
         self.transformer = nn.Transformer(
             d_model=embed_dim,
             nhead=self.nhead,
-            num_encoder_layers=4,
-            num_decoder_layers=4,
+            num_encoder_layers=6,
+            num_decoder_layers=6,
             dim_feedforward=2048,
             batch_first=True,
             norm_first=True,
