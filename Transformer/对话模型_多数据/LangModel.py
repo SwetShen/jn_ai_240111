@@ -13,11 +13,12 @@ class LangModel(nn.Module):
         self.transformer = nn.Transformer(
             d_model=embed_dim,
             nhead=self.nhead,
-            num_encoder_layers=10,
-            num_decoder_layers=10,
-            dim_feedforward=2048,
+            num_encoder_layers=16,
+            num_decoder_layers=16,
+            dim_feedforward=4096,
             batch_first=True,
             norm_first=True,
+            dropout=0.5
         )
         self.fc_out = nn.Linear(embed_dim, embedding.tokenizer.vocab_size)
 

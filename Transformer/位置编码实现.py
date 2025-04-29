@@ -8,7 +8,7 @@ class PositionEncoding(nn.Module):
     def __init__(self, embed_dim, max_len=1000):
         super().__init__()
         # 存放所有正余弦值的张量
-        self.P = torch.zeros(1, max_len, embed_dim)
+        self.P = torch.zeros(1, max_len, embed_dim, device=torch.device('cuda' if torch.cuda.is_available() else 'cpu'))
         # 正余弦波的输入
         pos = torch.arange(max_len).reshape(-1, 1).float()
         # 10000 的指数
@@ -42,5 +42,3 @@ if __name__ == '__main__':
     fig, ax = plt.subplots()
     ax.plot(torch.arange(1000), pe.P[0, :, 201])
     plt.show()
-
-

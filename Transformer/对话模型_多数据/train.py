@@ -11,7 +11,7 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 EPOCH = 100
 batch_size = 5
-lr = 1e-2
+lr = 1e-6
 
 ds = LangDataset()
 dl = DataLoader(ds, batch_size=batch_size, shuffle=True)
@@ -26,7 +26,7 @@ except:
 model.to(device)
 
 loss_fn = nn.CrossEntropyLoss(ignore_index=0)
-optimizer = torch.optim.AdamW(model.parameters(), lr=lr)
+optimizer = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=2)
 
 total_loss = 0.
 count = 0
@@ -41,6 +41,7 @@ for epoch in range(EPOCH):
         label, _ = tokenizer(label)
         src, tgt, src_key_padding_mask, tgt_key_padding_mask = src.to(device), tgt.to(device), src_key_padding_mask.to(
             device), tgt_key_padding_mask.to(device)
+        label = label.to(device)
 
         y = model(src, tgt, src_key_padding_mask, tgt_key_padding_mask)
         loss = loss_fn(y.reshape(y.shape[0] * y.shape[1], -1), label.reshape(-1))
