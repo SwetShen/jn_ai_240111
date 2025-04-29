@@ -38,7 +38,7 @@ class LangModel(nn.Module):
         tgt_mask = nn.Transformer.generate_square_subsequent_mask(src.shape[1]).unsqueeze(0).expand(
             src.shape[0] * self.nhead, -1, -1)
         # 将新建的张量放到模型对应的设备上
-        tgt_mask = tgt_mask.to(self.device)
+        tgt_mask = tgt_mask.to(src.device)
 
         # 调用transformer
         y = self.transformer(
